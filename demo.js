@@ -13,3 +13,6 @@ thirdListItem.style.backgroundColor = 'green';
 
 let listItems = document.getElementById('items');
 listItems.style.fontWeight = 'bold'
+
+let li = document.getElementsByTagName("li")[4];
+li.style.color = 'blue';
