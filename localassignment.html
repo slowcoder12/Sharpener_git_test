@@ -95,6 +95,7 @@
         deleteBtn.textContent = "Delete";
         deleteBtn.addEventListener("click", function () {
           li.remove();
+
           // Code to delete from local storage
           var users = JSON.parse(localStorage.getItem("users")) || [];
           var updatedUsers = [];
@@ -115,7 +116,35 @@
           localStorage.setItem("users", JSON.stringify(updatedUsers));
         });
 
+        var editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click", function () {
+          document.getElementById("name").value = name;
+          document.getElementById("email").value = email;
+          document.getElementById("phone").value = phone;
+          li.remove();
+
+          var users = JSON.parse(localStorage.getItem("users")) || [];
+          var updatedUsers = [];
+
+          for (var i = 0; i < users.length; i++) {
+            var user = users[i];
+            if (
+              !(
+                user.name === name &&
+                user.email === email &&
+                user.phone === phone
+              )
+            ) {
+              updatedUsers.push(user);
+            }
+          }
+
+          localStorage.setItem("users", JSON.stringify(updatedUsers));
+        });
+
         li.appendChild(deleteBtn);
+        li.appendChild(editBtn);
 
         document.getElementById("userdata").appendChild(li);
       }
