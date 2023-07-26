@@ -47,9 +47,16 @@
 
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
+      <div>
+        <ul id="userdata"></ul>
+      </div>
     </div>
 
     <script>
+      var form = document
+        .getElementById("form")
+        .addEventListener("submit", addLi);
+
       document
         .getElementById("form")
         .addEventListener("submit", function (event) {
@@ -73,6 +80,19 @@
 
           localStorage.setItem("users", JSON.stringify(users));
         });
+
+      function addLi(e) {
+        e.preventDefault();
+
+        let name = document.getElementById("name").value;
+        let email = document.getElementById("email").value;
+        let phone = document.getElementById("phone").value;
+
+        var li = document.createElement("li");
+        li.textContent = name + "-" + email + "-" + phone;
+
+        document.getElementById("userdata").appendChild(li);
+      }
     </script>
   </body>
 </html>
