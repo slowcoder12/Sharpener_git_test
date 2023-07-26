@@ -91,6 +91,32 @@
         var li = document.createElement("li");
         li.textContent = name + "-" + email + "-" + phone;
 
+        var deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", function () {
+          li.remove();
+          // Code to delete from local storage
+          var users = JSON.parse(localStorage.getItem("users")) || [];
+          var updatedUsers = [];
+
+          for (var i = 0; i < users.length; i++) {
+            var user = users[i];
+            if (
+              !(
+                user.name === name &&
+                user.email === email &&
+                user.phone === phone
+              )
+            ) {
+              updatedUsers.push(user);
+            }
+          }
+
+          localStorage.setItem("users", JSON.stringify(updatedUsers));
+        });
+
+        li.appendChild(deleteBtn);
+
         document.getElementById("userdata").appendChild(li);
       }
     </script>
