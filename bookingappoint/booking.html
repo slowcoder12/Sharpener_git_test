@@ -10,7 +10,6 @@
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <div class="container">
@@ -152,23 +151,26 @@
                 .then(function (response) {
                   console.log("User updated:", response.data);
 
+                  // Update the user details in the existing list item
                   li.textContent =
                     user.name + "-" + user.email + "-" + user.phone;
-                  document.getElementById("userdata").appendChild(li);
 
-                  document.getElementById("name").value = "";
-                  document.getElementById("email").value = "";
-                  document.getElementById("phone").value = "";
-
+                  // Reattach the event listener for adding new items
                   document
                     .getElementById("form")
                     .addEventListener("submit", addLi);
+
+                  // Clear the form fields
+                  document.getElementById("name").value = "";
+                  document.getElementById("email").value = "";
+                  document.getElementById("phone").value = "";
                 })
                 .catch(function (error) {
                   console.error("Error updating user:", error);
                 });
             });
 
+          // Remove the current list item from the DOM
           li.remove();
         });
 
@@ -178,5 +180,6 @@
         document.getElementById("userdata").appendChild(li);
       }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </body>
 </html>
