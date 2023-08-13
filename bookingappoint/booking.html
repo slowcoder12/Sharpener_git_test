@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Booking appoint axios</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <form class="form-inline" id="form" action="">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            placeholder="Enter Name"
+            name="Name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            placeholder="Enter email"
+            name="email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone:</label>
+          <input
+            type="phone"
+            class="form-control"
+            id="phone"
+            placeholder="Enter Phone Number"
+            name="Phone"
+          />
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+      <div>
+        <ul id="userdata"></ul>
+      </div>
+    </div>
+
+    <script>
+      function fetchAndDisplayUsers() {
+        axios
+          .get(
+            "https://crudcrud.com/api/1e9eb4fcf4d5425e83516736a2b38530/users"
+          )
+          .then(function (response) {
+            var users = response.data;
+            users.forEach(function (user) {
+              addLiFromUser(user);
+            });
+          })
+          .catch(function (error) {
+            console.error("Error fetching users:", error);
+          });
+      }
+
+      // Call the fetchAndDisplayUsers function when the DOM is loaded
+      document.addEventListener("DOMContentLoaded", fetchAndDisplayUsers);
+      document
+        .getElementById("form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          let name = document.getElementById("name").value;
+          let email = document.getElementById("email").value;
+          let phone = document.getElementById("phone").value;
+
+          var newUser = {
+            name: name,
+            email: email,
+            phone: phone,
+          };
+
+          axios
+            .post(
+              "https://crudcrud.com/api/1e9eb4fcf4d5425e83516736a2b38530/users",
+              newUser
+            )
+            .then(function (response) {
+              console.log("User added:", response.data);
+
+              addLiFromUser(response.data);
+            })
+            .catch(function (error) {
+              console.error("Error adding user:", error);
+            });
+        });
+
+      function addLiFromUser(user) {
+        var li = document.createElement("li");
+        li.textContent = user.name + "-" + user.email + "-" + user.phone;
+
+        var deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", function () {
+          axios
+            .delete(
+              "https://crudcrud.com/api/1e9eb4fcf4d5425e83516736a2b38530/users/" +
+                user._id
+            )
+            .then(function (response) {
+              console.log("User deleted:", response.data);
+
+              li.remove();
+            })
+            .catch(function (error) {
+              console.error("Error deleting user:", error);
+            });
+        });
+
+        var editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click", function () {
+          document.getElementById("name").value = user.name;
+          document.getElementById("email").value = user.email;
+          document.getElementById("phone").value = user.phone;
+
+          document
+            .getElementById("form")
+            .removeEventListener("submit", addLiFromUser);
+
+          document
+            .getElementById("form")
+            .addEventListener("submit", function (event) {
+              event.preventDefault();
+
+              user.name = document.getElementById("name").value;
+              user.email = document.getElementById("email").value;
+              user.phone = document.getElementById("phone").value;
+
+              axios
+                .put(
+                  "https://crudcrud.com/api/1e9eb4fcf4d5425e83516736a2b38530/users/" +
+                    user._id,
+                  user
+                )
+                .then(function (response) {
+                  console.log("User updated:", response.data);
+
+                  li.textContent =
+                    user.name + "-" + user.email + "-" + user.phone;
+                  document.getElementById("userdata").appendChild(li);
+
+                  document.getElementById("name").value = "";
+                  document.getElementById("email").value = "";
+                  document.getElementById("phone").value = "";
+
+                  document
+                    .getElementById("form")
+                    .addEventListener("submit", addLi);
+                })
+                .catch(function (error) {
+                  console.error("Error updating user:", error);
+                });
+            });
+
+          li.remove();
+        });
+
+        li.appendChild(deleteBtn);
+        li.appendChild(editBtn);
+
+        document.getElementById("userdata").appendChild(li);
+      }
+    </script>
+  </body>
+</html>
