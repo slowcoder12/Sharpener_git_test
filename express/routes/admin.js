@@ -3,30 +3,26 @@ const path = require('path');
 const router = express.Router();
 
 const rootDir = require("../helpers/path");
-console.log(rootDir);
+//console.log(rootDir);
+const getcontactusController = require("../controllers/contact");
 
-router.get('/add-product', (req,res,next)=>{
-    res.sendFile(path.join(rootDir,'views','add-product.html'));
-});
+const postcontactusController = require("../controllers/contact");
 
-router.post('/add-product',(req,res,next)=>{
-    console.log(req.body);
-    res.redirect('/shop');
+const getSuccess = require("../controllers/success");
 
-});
+const getprod = require("../controllers/products");
+const postprod = require("../controllers/products");
 
-router.get('/contact',(req,res)=>{
-    res.sendFile(path.join(rootDir,'views','contact.html'))
-})
+router.get('/add-product', getprod.getprod); 
 
-router.get('/success',(req,res)=>{
-    res.sendFile(path.join(rootDir,'views','success.html'))
-});
+router.post('/add-product',postprod.postprod);
 
-router.post('/contact',(req,res,next)=>{
-    //console.log(req.body.username,req.body.email);
-    res.redirect('/admin/success');
-});
+router.get('/contact',getcontactusController.getcontactusController
+);
+
+router.get('/success',getSuccess.getSuccess);
+
+router.post('/contact',postcontactusController.postcontactusController);
 
 
 
