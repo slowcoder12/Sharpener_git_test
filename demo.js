@@ -132,7 +132,6 @@ newListItem.appendChild(helloTextNode);
 
 var firstListItem = itemList.firstElementChild;
 
-
 itemList.insertBefore(newListItem, firstListItem);
 
 

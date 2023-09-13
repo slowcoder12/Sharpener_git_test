@@ -5,7 +5,7 @@ function updateLastUserActivity() {
   return new Promise((resolve) => {
     setTimeout(() => {
       lastActivity = new Date().toLocaleTimeString();
-      console.log(, lastActivity);
+      console.log( lastActivity);
       resolve();
     }, 1000);
   });
