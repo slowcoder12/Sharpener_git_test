@@ -24,10 +24,11 @@ form {
 }
 
 .image {
-  max-height: 20rem;
+  height: 20rem;
 }
-.image img{
-  height:100%
+
+.image img {
+  height: 100%;
 }
 
 .main-header {
